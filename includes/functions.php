@@ -62,7 +62,7 @@ function get_cart_total() {
     return $total;
 }
 
-function create_order($user_id) {
+function create_order($order_data) {
     global $db;
     
     if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
@@ -73,19 +73,52 @@ function create_order($user_id) {
         $db->beginTransaction();
 
         // Create order
-        $stmt = $db->prepare("INSERT INTO orders (user_id, total_amount) VALUES (?, ?)");
-        $total = get_cart_total();
-        $stmt->execute([$user_id, $total]);
+        $stmt = $db->prepare("INSERT INTO orders (
+            user_id, 
+            total_amount, 
+            shipping_address, 
+            billing_address, 
+            phone, 
+            email, 
+            notes, 
+            payment_method
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+        $stmt->execute([
+            $order_data['user_id'],
+            $order_data['total_amount'],
+            $order_data['shipping_address'],
+            $order_data['billing_address'],
+            $order_data['phone'],
+            $order_data['email'],
+            $order_data['notes'],
+            $order_data['payment_method']
+        ]);
+
         $order_id = $db->lastInsertId();
 
         // Create order items
-        $stmt = $db->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO order_items (
+            order_id, 
+            product_id, 
+            quantity, 
+            unit_price, 
+            total_price
+        ) VALUES (?, ?, ?, ?, ?)");
+
         foreach ($_SESSION['cart'] as $product_id => $item) {
-            $stmt->execute([$order_id, $product_id, $item['quantity'], $item['price']]);
+            $total_price = $item['price'] * $item['quantity'];
+            $stmt->execute([
+                $order_id,
+                $product_id,
+                $item['quantity'],
+                $item['price'],
+                $total_price
+            ]);
         }
 
         $db->commit();
-        unset($_SESSION['cart']);
+        unset($_SESSION['cart']); // Clear the cart after successful order
         return $order_id;
     } catch (Exception $e) {
         $db->rollBack();
@@ -273,4 +306,23 @@ function get_category($id) {
     $stmt = $db->prepare("SELECT * FROM categories WHERE id = ?");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function get_user_orders($user_id) {
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC");
+    $stmt->execute([$user_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function get_order_items($order_id) {
+    global $db;
+    $stmt = $db->prepare("
+        SELECT oi.*, p.name as product_name 
+        FROM order_items oi 
+        LEFT JOIN products p ON oi.product_id = p.id 
+        WHERE oi.order_id = ?
+    ");
+    $stmt->execute([$order_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

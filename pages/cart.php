@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </table>
                 <div class="text-end">
                     <button type="submit" name="update_cart" class="btn btn-secondary">Update Cart</button>
-                    <button type="submit" name="checkout" class="btn btn-primary">Checkout (Cash on Delivery)</button>
+                    <a href="index.php?page=checkout" class="btn btn-primary">Proceed to Checkout</a>
                 </div>
             </form>
         <?php else: ?>
