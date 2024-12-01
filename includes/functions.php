@@ -134,16 +134,16 @@ function register_user($data) {
     }
 }
 
-function add_category($name) {
+function add_category($name, $slug) {
     global $db;
-    $stmt = $db->prepare("INSERT INTO categories (name) VALUES (?)");
-    return $stmt->execute([$name]);
+    $stmt = $db->prepare("INSERT INTO categories (name, slug) VALUES (?, ?)");
+    return $stmt->execute([$name, $slug]);
 }
 
-function update_category($id, $name) {
+function update_category($id, $name, $slug) {
     global $db;
-    $stmt = $db->prepare("UPDATE categories SET name = ? WHERE id = ?");
-    return $stmt->execute([$name, $id]);
+    $stmt = $db->prepare("UPDATE categories SET name = ?, slug = ? WHERE id = ?");
+    return $stmt->execute([$name, $slug, $id]);
 }
 
 function delete_category($id) {
@@ -265,4 +265,11 @@ function handle_image_upload($image_file) {
     }
 
     return null;
+}
+
+function get_category($id) {
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM categories WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
