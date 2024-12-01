@@ -100,29 +100,34 @@ function is_admin() {
     return isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin';
 }
 
-function login_user($username, $password) {
+function login_user($email, $password) {
     global $db;
     
-    $stmt = $db->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
+    $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['user_type'] = $user['type'];
         $_SESSION['username'] = $user['username'];
-        $_SESSION['user_type'] = $user['user_type'];
         return true;
     }
     return false;
 }
 
-function register_user($username, $password, $email) {
+function register_user($data) {
     global $db;
     
     try {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $db->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
-        $stmt->execute([$username, $hashed_password, $email]);
+        $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
+        $stmt = $db->prepare("INSERT INTO users (email, password, username) VALUES (?, ?, ?)");
+        $stmt->execute([
+            $data['email'],
+            $hashed_password,
+            $data['username'] ?? null
+        ]);
         return true;
     } catch (PDOException $e) {
         return false;
@@ -147,18 +152,18 @@ function delete_category($id) {
     return $stmt->execute([$id]);
 }
 
-function add_product($name, $category_id, $description, $price, $image) {
+function add_product($name, $slug, $category_id, $description, $price, $image) {
     global $db;
-    $stmt = $db->prepare("INSERT INTO products (name, category_id, description, price, image) 
-                         VALUES (?, ?, ?, ?, ?)");
-    return $stmt->execute([$name, $category_id, $description, $price, $image]);
+    $stmt = $db->prepare("INSERT INTO products (name, slug, category_id, description, price, image) 
+                         VALUES (?, ?, ?, ?, ?, ?)");
+    return $stmt->execute([$name, $slug, $category_id, $description, $price, $image]);
 }
 
-function update_product($id, $name, $category_id, $description, $price, $image) {
+function update_product($id, $name, $slug, $category_id, $description, $price, $image) {
     global $db;
-    $stmt = $db->prepare("UPDATE products SET name = ?, category_id = ?, description = ?, 
+    $stmt = $db->prepare("UPDATE products SET name = ?, slug = ?, category_id = ?, description = ?, 
                          price = ?, image = ? WHERE id = ?");
-    return $stmt->execute([$name, $category_id, $description, $price, $image, $id]);
+    return $stmt->execute([$name, $slug, $category_id, $description, $price, $image, $id]);
 }
 
 function delete_product($id) {
@@ -189,4 +194,75 @@ function get_products_by_category($category_id) {
                          WHERE p.category_id = ?");
     $stmt->execute([$category_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function validate_user_data($data) {
+    $errors = [];
+    
+    if (empty($data['email'])) {
+        $errors['email'] = 'Email is required';
+    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Invalid email format';
+    }
+    
+    if (empty($data['password'])) {
+        $errors['password'] = 'Password is required';
+    } elseif (strlen($data['password']) < 6) {
+        $errors['password'] = 'Password must be at least 6 characters';
+    }
+    
+    return $errors;
+}
+
+function get_status_color($status) {
+    switch ($status) {
+        case 'pending':
+            return 'warning';
+        case 'processing':
+            return 'info';
+        case 'shipped':
+            return 'primary';
+        case 'delivered':
+            return 'success';
+        case 'cancelled':
+            return 'danger';
+        default:
+            return 'secondary';
+    }
+}
+
+function handle_image_upload($image_file) {
+    if (!$image_file || $image_file['error'] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+
+    // Set the directory path relative to document root
+    $upload_dir = "assets/products/";
+    if (!file_exists($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+
+    // Get file extension
+    $ext = strtolower(pathinfo($image_file['name'], PATHINFO_EXTENSION));
+    
+    // Only allow certain file types
+    $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    if (!in_array($ext, $allowed_types)) {
+        return null;
+    }
+    
+    // Generate simple filename: product_timestamp.extension
+    $filename = 'product_' . time() . '.' . $ext;
+    
+    // Full server path for moving the file
+    $target_path = $upload_dir . $filename;
+    
+    // URL path for database storage
+    $db_path = '/' . $target_path; // Add leading slash for URL path
+
+    if (move_uploaded_file($image_file['tmp_name'], $target_path)) {
+        return $db_path; // Return URL path starting with /assets/...
+    }
+
+    return null;
 }

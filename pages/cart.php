@@ -1,5 +1,6 @@
 <?php
 if (!is_logged_in()) {
+    $_SESSION['redirect_after_login'] = 'index.php?page=cart';
     header('Location: index.php?page=login');
     exit;
 }

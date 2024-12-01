@@ -11,17 +11,11 @@ DROP TABLE IF EXISTS users;
 -- Create users table with additional fields for better user management
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    phone VARCHAR(20),
-    address TEXT,
-    user_type ENUM('admin', 'customer') DEFAULT 'customer',
-    status ENUM('active', 'inactive') DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    password VARCHAR(255) NOT NULL,
+    type ENUM('admin', 'customer') DEFAULT 'customer',
+    username VARCHAR(50) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create categories table with slug for SEO
@@ -83,8 +77,8 @@ CREATE TABLE order_items (
 );
 
 -- Insert default admin user (password: admin123)
-INSERT INTO users (username, password, email, first_name, last_name, user_type) 
-VALUES ('admin', '$2y$10$8K1p/a4SWE6j5/GOOoMgCOzF9TJVZKp1qz.vsv6bqWL9yHk7WKjie', 'admin@example.com', 'Admin', 'User', 'admin');
+INSERT INTO users (email, password, type, username) 
+VALUES ('admin@example.com', '$2y$10$8K1p/a4SWE6j5/GOOoMgCOzF9TJVZKp1qz.vsv6bqWL9yHk7WKjie', 'admin', 'admin');
 
 -- Insert sample categories with slugs
 INSERT INTO categories (name, slug, description) VALUES 
@@ -95,11 +89,11 @@ INSERT INTO categories (name, slug, description) VALUES
 
 -- Insert sample products with slugs and stock
 INSERT INTO products (name, slug, category_id, description, price, stock_quantity, image) VALUES 
-('Smartphone', 'smartphone', 1, 'Latest smartphone with amazing features', 699.99, 10, NULL),
-('Laptop', 'laptop', 1, 'Powerful laptop for work and gaming', 999.99, 5, NULL),
-('T-shirt', 't-shirt', 2, 'Comfortable cotton t-shirt', 19.99, 50, NULL),
-('Novel', 'novel', 3, 'Bestselling fiction novel', 14.99, 20, NULL),
-('Coffee Maker', 'coffee-maker', 4, 'Automatic coffee maker with timer', 79.99, 15, NULL);
+('Smartphone', 'smartphone', 1, 'Latest smartphone with amazing features', 699.99, 10, '/assets/products/image1.jpg'),
+('Laptop', 'laptop', 1, 'Powerful laptop for work and gaming', 999.99, 5, '/assets/products/image2.jpg'),
+('T-shirt', 't-shirt', 2, 'Comfortable cotton t-shirt', 19.99, 50, '/assets/products/image3.jpg'),
+('Novel', 'novel', 3, 'Bestselling fiction novel', 14.99, 20, '/assets/products/image4.jpg'),
+('Coffee Maker', 'coffee-maker', 4, 'Automatic coffee maker with timer', 79.99, 15, '/assets/products/image5.jpg');
 
 -- Create indexes for better performance
 CREATE INDEX idx_user_email ON users(email);
@@ -108,3 +102,7 @@ CREATE INDEX idx_product_slug ON products(slug);
 CREATE INDEX idx_category_slug ON categories(slug);
 CREATE INDEX idx_order_user ON orders(user_id);
 CREATE INDEX idx_order_status ON orders(status);
+
+
+-- mysql -u root  < database.sql
+

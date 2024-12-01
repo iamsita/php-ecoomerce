@@ -33,6 +33,11 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=categories">Categories</a>
                     </li>
+                    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.php?page=admin">Admin Panel</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -44,6 +49,11 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=orders">My Orders</a>
                         </li>
+                        <?php if ($_SESSION['user_type'] === 'admin'): ?>
+                            <li class="nav-item">
+                                <span class="nav-link text-warning">Admin: <?php echo htmlspecialchars($_SESSION['email']); ?></span>
+                            </li>
+                        <?php endif; ?>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=logout">Logout</a>
                         </li>
@@ -62,6 +72,12 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
     <div class="container mt-4">
         <?php
+        // Create assets/images directory if it doesn't exist
+        $image_dir = 'assets/images';
+        if (!file_exists($image_dir)) {
+            mkdir($image_dir, 0777, true);
+        }
+
         switch ($page) {
             case 'home':
                 include 'pages/home.php';
@@ -85,7 +101,15 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
                 include 'pages/orders.php';
                 break;
             case 'admin':
-                include 'admin/index.php';
+                if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') {
+                    include 'admin/index.php';
+                } else {
+                    header('Location: index.php');
+                    exit;
+                }
+                break;
+            case 'logout':
+                include 'pages/logout.php';
                 break;
             default:
                 include 'pages/404.php';
