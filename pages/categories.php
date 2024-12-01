@@ -18,12 +18,8 @@ $categories = $search_query ? search_categories($search_query) : get_categories(
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo htmlspecialchars($category['name']); ?></h5>
-                    <?php if ($category['description']): ?>
-                        <p class="card-text"><?php echo htmlspecialchars($category['description']); ?></p>
-                    <?php endif; ?>
                     <div class="d-flex justify-content-between align-items-center">
                         <?php
-                        // Get count of products in this category
                         $products_count = get_category_products_count($category['id']);
                         ?>
                         <small class="text-muted"><?php echo $products_count; ?> products</small>

@@ -350,10 +350,8 @@ function search_products($query) {
 function search_categories($query) {
     global $db;
     $search = "%{$query}%";
-    $stmt = $db->prepare("SELECT * FROM categories 
-                         WHERE name LIKE ? 
-                         OR description LIKE ?");
-    $stmt->execute([$search, $search]);
+    $stmt = $db->prepare("SELECT * FROM categories WHERE name LIKE ?");
+    $stmt->execute([$search]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 

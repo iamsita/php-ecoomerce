@@ -18,26 +18,23 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create categories table with slug for SEO
+-- Create categories table
 CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(100) NOT NULL,
-    description TEXT,
-    status ENUM('active', 'inactive') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Create products table with additional fields for better product management
+-- Create products table
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
-    slug VARCHAR(200) NOT NULL ,
+    slug VARCHAR(200) NOT NULL,
     category_id INT,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
-    stock_quantity INT DEFAULT 0,
     image VARCHAR(255),
     status ENUM('active', 'inactive') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
