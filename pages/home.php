@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
 }
 
 // Get featured products (latest 6 products)
-$featured_products = get_products(6);
+$featured_products = get_products(20);
 ?>
 
 <div class="jumbotron text-center bg-light p-4 mb-4">

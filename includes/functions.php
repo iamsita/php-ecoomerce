@@ -326,3 +326,10 @@ function get_order_items($order_id) {
     $stmt->execute([$order_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function get_category_products_count($category_id) {
+    global $db;
+    $stmt = $db->prepare("SELECT COUNT(*) FROM products WHERE category_id = ?");
+    $stmt->execute([$category_id]);
+    return $stmt->fetchColumn();
+}
