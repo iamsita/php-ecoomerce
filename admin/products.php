@@ -50,6 +50,14 @@ $edit_product = null;
 if ($action === 'edit' && isset($_GET['id'])) {
     $edit_product = get_product($_GET['id']);
 }
+
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+if ($action !== 'edit') {
+    include 'includes/search_bar.php';
+}
+
+$products = $search_query ? search_products($search_query) : get_products();
 ?>
 
 <div class="card">
@@ -127,7 +135,7 @@ if ($action === 'edit' && isset($_GET['id'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach (get_products() as $product): ?>
+                    <?php foreach ($products as $product): ?>
                     <tr>
                         <td><?php echo $product['id']; ?></td>
                         <td>

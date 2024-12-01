@@ -1,6 +1,15 @@
 <?php
 // Get all categories
 $categories = get_categories();
+
+// Add after getting categories
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Add before the categories grid
+include 'includes/search_bar.php';
+
+// Update categories query
+$categories = $search_query ? search_categories($search_query) : get_categories();
 ?>
 
 <div class="row">

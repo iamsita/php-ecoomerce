@@ -14,7 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_status'])) {
     }
 }
 
-$orders = get_all_orders();
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+include 'includes/search_bar.php';
+
+$orders = $search_query ? search_orders($search_query) : get_all_orders();
 ?>
 
 <div class="card">

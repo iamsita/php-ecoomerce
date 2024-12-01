@@ -17,12 +17,20 @@ $category_id = isset($_GET['category']) ? (int)$_GET['category'] : null;
 // Get all categories for filter
 $categories = get_categories();
 
-// Get products based on category filter
-if ($category_id) {
+// Get search query if set
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Update the products query
+if ($search_query) {
+    $products = search_products($search_query);
+} elseif ($category_id) {
     $products = get_products_by_category($category_id);
 } else {
     $products = get_products();
 }
+
+// Add search bar before the products grid
+include 'includes/search_bar.php';
 ?>
 
 <div class="row">

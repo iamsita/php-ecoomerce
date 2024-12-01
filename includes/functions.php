@@ -333,3 +333,52 @@ function get_category_products_count($category_id) {
     $stmt->execute([$category_id]);
     return $stmt->fetchColumn();
 }
+
+function search_products($query) {
+    global $db;
+    $search = "%{$query}%";
+    $stmt = $db->prepare("SELECT p.*, c.name as category_name 
+                         FROM products p 
+                         LEFT JOIN categories c ON p.category_id = c.id 
+                         WHERE p.name LIKE ? 
+                         OR p.description LIKE ? 
+                         OR c.name LIKE ?");
+    $stmt->execute([$search, $search, $search]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function search_categories($query) {
+    global $db;
+    $search = "%{$query}%";
+    $stmt = $db->prepare("SELECT * FROM categories 
+                         WHERE name LIKE ? 
+                         OR description LIKE ?");
+    $stmt->execute([$search, $search]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function search_orders($query) {
+    global $db;
+    $search = "%{$query}%";
+    $stmt = $db->prepare("SELECT o.*, u.username, u.email 
+                         FROM orders o 
+                         JOIN users u ON o.user_id = u.id 
+                         WHERE o.id LIKE ? 
+                         OR u.username LIKE ? 
+                         OR u.email LIKE ? 
+                         OR o.phone LIKE ?
+                         ORDER BY o.created_at DESC");
+    $stmt->execute([$search, $search, $search, $search]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function search_user_orders($user_id, $query) {
+    global $db;
+    $search = "%{$query}%";
+    $stmt = $db->prepare("SELECT * FROM orders 
+                         WHERE user_id = ? 
+                         AND (id LIKE ? OR phone LIKE ? OR email LIKE ?)
+                         ORDER BY created_at DESC");
+    $stmt->execute([$user_id, $search, $search, $search]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

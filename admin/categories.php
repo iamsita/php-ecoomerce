@@ -35,6 +35,17 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
         $message = "Category deleted successfully";
     }
 }
+
+// Add after authentication check
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Add before the category list
+if ($action !== 'edit') {
+    include 'includes/search_bar.php';
+}
+
+// Update category listing query
+$categories = $search_query ? search_categories($search_query) : get_categories();
 ?>
 
 <div class="card">
@@ -82,7 +93,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach (get_categories() as $category): ?>
+                    <?php foreach ($categories as $category): ?>
                     <tr>
                         <td><?php echo $category['id']; ?></td>
                         <td><?php echo htmlspecialchars($category['name']); ?></td>

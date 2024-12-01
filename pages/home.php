@@ -11,8 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     }
 }
 
-// Get featured products (latest 6 products)
-$featured_products = get_products(20);
+// Add after cart handling
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Add before the products grid
+include 'includes/search_bar.php';
+
+// Update featured products query
+$featured_products = $search_query ? search_products($search_query) : get_products(20);
 ?>
 
 <div class="jumbotron text-center bg-light p-4 mb-4">

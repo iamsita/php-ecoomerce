@@ -5,8 +5,14 @@ if (!is_logged_in()) {
     exit;
 }
 
+// Add after authentication check
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Add before the orders list
+include 'includes/search_bar.php';
+
 // Get user's orders
-$orders = get_user_orders($_SESSION['user_id']);
+$orders = $search_query ? search_user_orders($_SESSION['user_id'], $search_query) : get_user_orders($_SESSION['user_id']);
 ?>
 
 <div class="card">
