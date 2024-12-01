@@ -6,7 +6,6 @@ if (!is_admin()) {
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $message = '';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['add_product']) || isset($_POST['edit_product'])) {
         $name = $_POST['name'];
@@ -18,6 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $image = '';
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
             $image = handle_image_upload($_FILES['image']);
+        } elseif (isset($_POST['edit_product'])) {
+            // Keep existing image if no new image uploaded during edit
+            $existing_product = get_product($_POST['id']);
+            $image = $existing_product['image'];
         }
 
         if (isset($_POST['add_product'])) {
@@ -28,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } elseif (isset($_POST['edit_product'])) {
             if (update_product($_POST['id'], $name, $slug, $category_id, $description, $price, $image)) {
-                $message = "Product updated successfully";
+                header('Location: index.php?page=admin&admin_page=products');
+                exit;
             } else {
                 $message = "Error updating product";
             }
