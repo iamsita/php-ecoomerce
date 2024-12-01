@@ -71,6 +71,16 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     </nav>
 
     <div class="container mt-4">
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php 
+                echo $_SESSION['message'];
+                unset($_SESSION['message']); // Clear the message after displaying
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
         <?php
         // Create assets/images directory if it doesn't exist
         $image_dir = 'assets/images';
@@ -119,5 +129,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     </div>
 
     <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

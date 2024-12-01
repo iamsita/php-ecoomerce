@@ -45,7 +45,8 @@ function add_to_cart($product_id, $quantity = 1) {
         $_SESSION['cart'][$product_id] = [
             'name' => $product['name'],
             'price' => $product['price'],
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'image' => $product['image']
         ];
     }
     return true;
