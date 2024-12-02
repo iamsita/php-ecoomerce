@@ -124,6 +124,9 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             case 'checkout':
                 include 'pages/checkout.php';
                 break;
+            case 'product_detail':
+                include 'pages/product_detail.php';
+                break;
             default:
                 include 'pages/404.php';
                 break;

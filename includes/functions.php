@@ -380,3 +380,22 @@ function search_user_orders($user_id, $query) {
     $stmt->execute([$user_id, $search, $search, $search]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function get_related_products($category_id, $current_product_id, $limit = 4) {
+    global $db;
+    $stmt = $db->prepare("SELECT p.*, c.name as category_name 
+                         FROM products p 
+                         LEFT JOIN categories c ON p.category_id = c.id 
+                         WHERE p.category_id = :category_id 
+                         AND p.id != :current_id 
+                         ORDER BY RAND() 
+                         LIMIT :limit");
+    
+    // Need to bind LIMIT parameter explicitly as integer
+    $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+    $stmt->bindValue(':current_id', $current_product_id, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

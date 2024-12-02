@@ -31,7 +31,9 @@ $featured_products = $search_query ? search_products($search_query) : get_produc
 <div class="row">
     <?php foreach ($featured_products as $product): ?>
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card product-card">
+                <a href="index.php?page=product_detail&id=<?php echo $product['id']; ?>" 
+                   class="product-card-link"></a>
                 <?php if ($product['image']): ?>
                     <img src="<?php echo htmlspecialchars($product['image']); ?>" 
                          class="card-img-top" 
@@ -39,7 +41,12 @@ $featured_products = $search_query ? search_products($search_query) : get_produc
                          style="height: 200px; object-fit: cover;">
                 <?php endif; ?>
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                    <h5 class="card-title">
+                        <a href="index.php?page=product_detail&id=<?php echo $product['id']; ?>" 
+                           class="text-decoration-none text-dark">
+                            <?php echo htmlspecialchars($product['name']); ?>
+                        </a>
+                    </h5>
                     <p class="card-text">
                         <?php echo substr(htmlspecialchars($product['description']), 0, 100) . '...'; ?>
                     </p>
