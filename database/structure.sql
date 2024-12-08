@@ -41,11 +41,8 @@ CREATE TABLE orders (
     user_id INT,
     total_amount DECIMAL(10,2) NOT NULL,
     shipping_address TEXT,
-    billing_address TEXT,
     phone VARCHAR(20),
-    email VARCHAR(100),
     status ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
-    payment_status ENUM('pending', 'paid', 'failed') DEFAULT 'pending',
     payment_method ENUM('cod', 'bank_transfer') DEFAULT 'cod',
     notes TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL

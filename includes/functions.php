@@ -91,22 +91,18 @@ function create_order($order_data)
             user_id, 
             total_amount, 
             shipping_address, 
-            billing_address, 
             phone, 
-            email, 
             notes, 
             payment_method
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        ) VALUES (?, ?, ?, ?, ?, ?)');
 
         $stmt->execute([
-            $order_data['user_id'],
-            $order_data['total_amount'],
-            $order_data['shipping_address'],
-            $order_data['billing_address'],
-            $order_data['phone'],
-            $order_data['email'],
-            $order_data['notes'],
-            $order_data['payment_method'],
+            (int) $order_data['user_id'],
+            (float) $order_data['total_amount'],
+            (string) $order_data['shipping_address'],
+            (string) $order_data['phone'],
+            (string) $order_data['notes'],
+            (string) $order_data['payment_method'],
         ]);
 
         $order_id = $db->lastInsertId();
@@ -124,10 +120,10 @@ function create_order($order_data)
             $total_price = $item['price'] * $item['quantity'];
             $stmt->execute([
                 $order_id,
-                $product_id,
-                $item['quantity'],
-                $item['price'],
-                $total_price,
+                (int) $product_id,
+                (int) $item['quantity'],
+                (float) $item['price'],
+                (float) $total_price,
             ]);
         }
 

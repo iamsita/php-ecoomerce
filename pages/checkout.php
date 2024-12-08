@@ -26,13 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
         $order_data = [
             'user_id' => $_SESSION['user_id'],
+            'total_amount' => get_cart_total(),
             'shipping_address' => $_POST['shipping_address'],
-            'billing_address' => $_POST['billing_address'] ?? $_POST['shipping_address'],
             'phone' => $_POST['phone'],
-            'email' => $_SESSION['email'],
+            'status' => 'pending',
             'notes' => $_POST['notes'] ?? '',
             'payment_method' => 'cod',
-            'total_amount' => get_cart_total(),
         ];
 
         $order_id = create_order($order_data);
@@ -75,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                     <div class="mb-3">
-                        <label>Order Notes</label>
+                        <label>Additional Information</label>
                         <textarea name="notes" class="form-control" rows="2"><?php echo $_POST['notes'] ?? ''; ?></textarea>
                     </div>
 
