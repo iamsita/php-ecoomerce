@@ -1,5 +1,5 @@
 <?php
-if (!is_logged_in()) {
+if (! is_logged_in()) {
     $_SESSION['redirect_after_login'] = 'index.php?page=orders';
     header('Location: index.php?page=login');
     exit;
@@ -20,11 +20,11 @@ $orders = $search_query ? search_user_orders($_SESSION['user_id'], $search_query
         <h2>My Orders</h2>
     </div>
     <div class="card-body">
-        <?php if (empty($orders)): ?>
+        <?php if (empty($orders)) { ?>
             <p>You haven't placed any orders yet.</p>
             <a href="index.php?page=products" class="btn btn-primary">Start Shopping</a>
-        <?php else: ?>
-            <?php foreach ($orders as $order): ?>
+        <?php } else { ?>
+            <?php foreach ($orders as $order) { ?>
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
@@ -44,7 +44,7 @@ $orders = $search_query ? search_user_orders($_SESSION['user_id'], $search_query
                             <div class="col-md-8">
                                 <h6>Order Items:</h6>
                                 <?php $order_items = get_order_items($order['id']); ?>
-                                <?php foreach ($order_items as $item): ?>
+                                <?php foreach ($order_items as $item) { ?>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span>
                                             <?php echo htmlspecialchars($item['product_name']); ?> 
@@ -52,7 +52,7 @@ $orders = $search_query ? search_user_orders($_SESSION['user_id'], $search_query
                                         </span>
                                         <span>$<?php echo number_format($item['total_price'], 2); ?></span>
                                     </div>
-                                <?php endforeach; ?>
+                                <?php } ?>
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <strong>Total:</strong>
@@ -67,15 +67,15 @@ $orders = $search_query ? search_user_orders($_SESSION['user_id'], $search_query
                                     Phone: <?php echo htmlspecialchars($order['phone']); ?><br>
                                     Email: <?php echo htmlspecialchars($order['email']); ?>
                                 </p>
-                                <?php if ($order['notes']): ?>
+                                <?php if ($order['notes']) { ?>
                                     <h6>Notes:</h6>
                                     <p><?php echo nl2br(htmlspecialchars($order['notes'])); ?></p>
-                                <?php endif; ?>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
+            <?php } ?>
+        <?php } ?>
     </div>
 </div> 

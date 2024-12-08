@@ -1,5 +1,5 @@
 <?php
-if (!is_admin()) {
+if (! is_admin()) {
     header('Location: index.php');
     exit;
 }
@@ -73,7 +73,7 @@ $recent_orders = array_slice(get_all_orders(), 0, 5);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($recent_orders as $order): ?>
+                        <?php foreach ($recent_orders as $order) { ?>
                             <tr>
                                 <td>#<?php echo $order['id']; ?></td>
                                 <td><?php echo htmlspecialchars($order['username']); ?></td>
@@ -85,7 +85,7 @@ $recent_orders = array_slice(get_all_orders(), 0, 5);
                                 </td>
                                 <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

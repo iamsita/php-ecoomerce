@@ -1,5 +1,5 @@
 <?php
-if (!is_admin()) {
+if (! is_admin()) {
     header('Location: index.php');
     exit;
 }
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_status'])) {
     $order_id = $_POST['order_id'];
     $status = $_POST['status'];
     if (update_order_status($order_id, $status)) {
-        $message = "Order status updated successfully";
+        $message = 'Order status updated successfully';
     }
 }
 
@@ -26,9 +26,9 @@ $orders = $search_query ? search_orders($search_query) : get_all_orders();
         <h3>Manage Orders</h3>
     </div>
     <div class="card-body">
-        <?php if ($message): ?>
+        <?php if ($message) { ?>
             <div class="alert alert-success"><?php echo $message; ?></div>
-        <?php endif; ?>
+        <?php } ?>
 
         <table class="table">
             <thead>
@@ -42,7 +42,7 @@ $orders = $search_query ? search_orders($search_query) : get_all_orders();
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($orders as $order): ?>
+                <?php foreach ($orders as $order) { ?>
                     <tr>
                         <td>#<?php echo $order['id']; ?></td>
                         <td><?php echo htmlspecialchars($order['username']); ?></td>
@@ -67,7 +67,7 @@ $orders = $search_query ? search_orders($search_query) : get_all_orders();
                             </form>
                         </td>
                     </tr>
-                <?php endforeach; ?>
+                <?php } ?>
             </tbody>
         </table>
     </div>

@@ -1,5 +1,5 @@
 <?php
-if (!is_logged_in()) {
+if (! is_logged_in()) {
     $_SESSION['redirect_after_login'] = 'index.php?page=cart';
     header('Location: index.php?page=login');
     exit;
@@ -38,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Shopping Cart</h2>
     </div>
     <div class="card-body">
-        <?php if ($message): ?>
+        <?php if ($message) { ?>
             <div class="alert alert-success"><?php echo $message; ?></div>
-        <?php endif; ?>
+        <?php } ?>
 
-        <?php if (!empty($_SESSION['cart'])): ?>
+        <?php if (! empty($_SESSION['cart'])) { ?>
             <form method="post">
                 <table class="table">
                     <thead>
@@ -55,13 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($_SESSION['cart'] as $product_id => $item): ?>
+                        <?php foreach ($_SESSION['cart'] as $product_id => $item) { ?>
                             <tr>
                                 <td>
-                                    <?php if (isset($item['image'])): ?>
+                                    <?php if (isset($item['image'])) { ?>
                                         <img src="<?php echo htmlspecialchars($item['image']); ?>" 
                                              alt="" style="width: 50px; height: 50px; object-fit: cover;">
-                                    <?php endif; ?>
+                                    <?php } ?>
                                     <?php echo htmlspecialchars($item['name']); ?>
                                 </td>
                                 <td>$<?php echo number_format($item['price'], 2); ?></td>
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             class="btn btn-sm btn-danger">Remove</button>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
                         <tr>
                             <td colspan="3" class="text-end"><strong>Total:</strong></td>
                             <td colspan="2"><strong>$<?php echo number_format(get_cart_total(), 2); ?></strong></td>
@@ -88,9 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <a href="index.php?page=checkout" class="btn btn-primary">Proceed to Checkout</a>
                 </div>
             </form>
-        <?php else: ?>
+        <?php } else { ?>
             <p>Your cart is empty.</p>
             <a href="index.php?page=products" class="btn btn-primary">Continue Shopping</a>
-        <?php endif; ?>
+        <?php } ?>
     </div>
 </div> 

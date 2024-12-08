@@ -1,5 +1,5 @@
 <?php
-if (!is_admin()) {
+if (! is_admin()) {
     header('Location: index.php');
     exit;
 }
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $name = $_POST['name'];
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
         if (add_category($name, $slug)) {
-            $message = "Category added successfully";
+            $message = 'Category added successfully';
         }
     } elseif (isset($_POST['edit_category'])) {
         $name = $_POST['name'];
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     if (delete_category($_GET['delete'])) {
-        $message = "Category deleted successfully";
+        $message = 'Category deleted successfully';
     }
 }
 
@@ -53,14 +53,14 @@ $categories = $search_query ? search_categories($search_query) : get_categories(
         <h2><?php echo $action === 'edit' ? 'Edit Category' : 'Manage Categories'; ?></h2>
     </div>
     <div class="card-body">
-        <?php if ($message): ?>
+        <?php if ($message) { ?>
             <div class="alert alert-success"><?php echo $message; ?></div>
-        <?php endif; ?>
+        <?php } ?>
 
         <form method="post" class="mb-4">
-            <?php if ($edit_category): ?>
+            <?php if ($edit_category) { ?>
                 <input type="hidden" name="id" value="<?php echo $edit_category['id']; ?>">
-            <?php endif; ?>
+            <?php } ?>
             
             <div class="row">
                 <div class="col-md-6">
@@ -75,14 +75,14 @@ $categories = $search_query ? search_categories($search_query) : get_categories(
                             class="btn btn-primary">
                         <?php echo $edit_category ? 'Update Category' : 'Add Category'; ?>
                     </button>
-                    <?php if ($edit_category): ?>
+                    <?php if ($edit_category) { ?>
                         <a href="index.php?page=admin&admin_page=categories" class="btn btn-secondary">Cancel</a>
-                    <?php endif; ?>
+                    <?php } ?>
                 </div>
             </div>
         </form>
 
-        <?php if ($action !== 'edit'): ?>
+        <?php if ($action !== 'edit') { ?>
             <table class="table">
                 <thead>
                     <tr>
@@ -93,7 +93,7 @@ $categories = $search_query ? search_categories($search_query) : get_categories(
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($categories as $category): ?>
+                    <?php foreach ($categories as $category) { ?>
                     <tr>
                         <td><?php echo $category['id']; ?></td>
                         <td><?php echo htmlspecialchars($category['name']); ?></td>
@@ -106,9 +106,9 @@ $categories = $search_query ? search_categories($search_query) : get_categories(
                                onclick="return confirm('Are you sure?')">Delete</a>
                         </td>
                     </tr>
-                    <?php endforeach; ?>
+                    <?php } ?>
                 </tbody>
             </table>
-        <?php endif; ?>
+        <?php } ?>
     </div>
 </div> 

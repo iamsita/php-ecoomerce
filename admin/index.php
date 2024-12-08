@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION['user_id']) || !is_admin()) {
+if (! isset($_SESSION['user_id']) || ! is_admin()) {
     header('Location: index.php?page=login');
     exit;
 }
@@ -35,6 +35,6 @@ $admin_page = isset($_GET['admin_page']) ? $_GET['admin_page'] : 'dashboard';
                 include 'admin/dashboard.php';
                 break;
         }
-        ?>
+?>
     </div>
 </div> 

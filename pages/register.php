@@ -29,35 +29,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h3>Register</h3>
             </div>
             <div class="card-body">
-                <?php if ($success): ?>
+                <?php if ($success) { ?>
                     <div class="alert alert-success">
                         Registration successful! You can now <a href="index.php?page=login">login</a>.
                     </div>
-                <?php else: ?>
-                    <?php if (isset($errors['general'])): ?>
+                <?php } else { ?>
+                    <?php if (isset($errors['general'])) { ?>
                         <div class="alert alert-danger"><?php echo $errors['general']; ?></div>
-                    <?php endif; ?>
+                    <?php } ?>
 
                     <form method="post">
                         <div class="mb-3">
                             <label>Email*</label>
                             <input type="email" name="email" class="form-control" value="<?php echo $_POST['email'] ?? ''; ?>" required>
-                            <?php if (isset($errors['email'])): ?>
+                            <?php if (isset($errors['email'])) { ?>
                                 <div class="text-danger"><?php echo $errors['email']; ?></div>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
                         <div class="mb-3">
                             <label>Password*</label>
                             <input type="password" name="password" class="form-control" required>
-                            <?php if (isset($errors['password'])): ?>
+                            <?php if (isset($errors['password'])) { ?>
                                 <div class="text-danger"><?php echo $errors['password']; ?></div>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Register</button>
                         <a href="index.php?page=login" class="btn btn-link">Already have an account? Login</a>
                     </form>
-                <?php endif; ?>
+                <?php } ?>
             </div>
         </div>
     </div>

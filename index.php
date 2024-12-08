@@ -24,105 +24,107 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
+                    <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=admin">Admin Panel</a>
                         </li>
-                    <?php endif; ?>
-                </ul>
+                    <?php } ?>
+                </ul>`
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                  
+                    <?php if (isset($_SESSION['user_id'])) { ?>
+                        <li class="nav-item">
                         <a class="nav-link" href="index.php?page=cart">
                             Cart (<?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>)
                         </a>
-                    </li>
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=orders">My Orders</a>
                         </li>
-                        <?php if ($_SESSION['user_type'] === 'admin'): ?>
+                        
+                        <?php if ($_SESSION['user_type'] === 'admin') { ?>
                             <li class="nav-item">
                                 <span class="nav-link text-warning">Admin: <?php echo htmlspecialchars($_SESSION['email']); ?></span>
                             </li>
-                        <?php endif; ?>
+                        <?php } ?>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=logout">Logout</a>
                         </li>
-                    <?php else: ?>
+                    <?php } else { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=login">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=register">Register</a>
                         </li>
-                    <?php endif; ?>
+                    <?php } ?>
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <?php if (isset($_SESSION['message'])): ?>
+        <?php if (isset($_SESSION['message'])) { ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?php 
+                <?php
                 echo $_SESSION['message'];
-                unset($_SESSION['message']); // Clear the message after displaying
-                ?>
+            unset($_SESSION['message']); // Clear the message after displaying
+            ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        <?php endif; ?>
+        <?php } ?>
 
         <?php
         // Create assets/images directory if it doesn't exist
         $image_dir = 'assets/images';
-        if (!file_exists($image_dir)) {
-            mkdir($image_dir, 0777, true);
-        }
+if (! file_exists($image_dir)) {
+    mkdir($image_dir, 0777, true);
+}
 
-        switch ($page) {
-            case 'home':
-                include 'pages/home.php';
-                break;
-            case 'products':
-                include 'pages/products.php';
-                break;
-            // case 'categories':
-            //     include 'pages/categories.php';
-            //     break;
-            case 'cart':
-                include 'pages/cart.php';
-                break;
-            case 'login':
-                include 'pages/login.php';
-                break;
-            case 'register':
-                include 'pages/register.php';
-                break;
-            case 'orders':
-                include 'pages/orders.php';
-                break;
-            case 'admin':
-                if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') {
-                    include 'admin/index.php';
-                } else {
-                    header('Location: index.php');
-                    exit;
-                }
-                break;
-            case 'logout':
-                include 'pages/logout.php';
-                break;
-            case 'checkout':
-                include 'pages/checkout.php';
-                break;
-            case 'product_detail':
-                include 'pages/product_detail.php';
-                break;
-            default:
-                include 'pages/404.php';
-                break;
+switch ($page) {
+    case 'home':
+        include 'pages/home.php';
+        break;
+    case 'products':
+        include 'pages/products.php';
+        break;
+        // case 'categories':
+        //     include 'pages/categories.php';
+        //     break;
+    case 'cart':
+        include 'pages/cart.php';
+        break;
+    case 'login':
+        include 'pages/login.php';
+        break;
+    case 'register':
+        include 'pages/register.php';
+        break;
+    case 'orders':
+        include 'pages/orders.php';
+        break;
+    case 'admin':
+        if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') {
+            include 'admin/index.php';
+        } else {
+            header('Location: index.php');
+            exit;
         }
-        ?>
+        break;
+    case 'logout':
+        include 'pages/logout.php';
+        break;
+    case 'checkout':
+        include 'pages/checkout.php';
+        break;
+    case 'product_detail':
+        include 'pages/product_detail.php';
+        break;
+    default:
+        include 'pages/404.php';
+        break;
+}
+?>
     </div>
 
     <script src="assets/js/main.js"></script>

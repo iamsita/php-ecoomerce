@@ -1,5 +1,5 @@
 <?php
-if (!is_logged_in()) {
+if (! is_logged_in()) {
     $_SESSION['redirect_after_login'] = 'index.php?page=checkout';
     header('Location: index.php?page=login');
     exit;
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'email' => $_SESSION['email'],
             'notes' => $_POST['notes'] ?? '',
             'payment_method' => 'cod',
-            'total_amount' => get_cart_total()
+            'total_amount' => get_cart_total(),
         ];
 
         $order_id = create_order($order_data);
@@ -52,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Checkout</h2>
     </div>
     <div class="card-body">
-        <?php if (!empty($errors['general'])): ?>
+        <?php if (! empty($errors['general'])) { ?>
             <div class="alert alert-danger"><?php echo $errors['general']; ?></div>
-        <?php endif; ?>
+        <?php } ?>
 
         <div class="row">
             <div class="col-md-8">
@@ -62,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="mb-3">
                         <label>Shipping Address*</label>
                         <textarea name="shipping_address" class="form-control" rows="3" required><?php echo $_POST['shipping_address'] ?? ''; ?></textarea>
-                        <?php if (isset($errors['shipping_address'])): ?>
+                        <?php if (isset($errors['shipping_address'])) { ?>
                             <div class="text-danger"><?php echo $errors['shipping_address']; ?></div>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
 
                     <div class="mb-3">
@@ -75,9 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="mb-3">
                         <label>Phone Number*</label>
                         <input type="tel" name="phone" class="form-control" value="<?php echo $_POST['phone'] ?? ''; ?>" required>
-                        <?php if (isset($errors['phone'])): ?>
+                        <?php if (isset($errors['phone'])) { ?>
                             <div class="text-danger"><?php echo $errors['phone']; ?></div>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
 
                     <div class="mb-3">
@@ -96,12 +96,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <h3>Order Summary</h3>
                     </div>
                     <div class="card-body">
-                        <?php foreach ($_SESSION['cart'] as $product_id => $item): ?>
+                        <?php foreach ($_SESSION['cart'] as $product_id => $item) { ?>
                             <div class="d-flex justify-content-between mb-2">
                                 <span><?php echo htmlspecialchars($item['name']); ?> (×<?php echo $item['quantity']; ?>)</span>
                                 <span>$<?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
                             </div>
-                        <?php endforeach; ?>
+                        <?php } ?>
                         <hr>
                         <div class="d-flex justify-content-between">
                             <strong>Total:</strong>

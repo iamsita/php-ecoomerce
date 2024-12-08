@@ -1,5 +1,5 @@
 <?php
-if (!is_admin()) {
+if (! is_admin()) {
     header('Location: index.php');
     exit;
 }
@@ -25,16 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (isset($_POST['add_product'])) {
             if (add_product($name, $slug, $category_id, $description, $price, $image)) {
-                $message = "Product added successfully";
+                $message = 'Product added successfully';
             } else {
-                $message = "Error adding product";
+                $message = 'Error adding product';
             }
         } elseif (isset($_POST['edit_product'])) {
             if (update_product($_POST['id'], $name, $slug, $category_id, $description, $price, $image)) {
                 header('Location: index.php?page=admin&admin_page=products');
                 exit;
             } else {
-                $message = "Error updating product";
+                $message = 'Error updating product';
             }
         }
     }
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     if (delete_product($_GET['delete'])) {
-        $message = "Product deleted successfully";
+        $message = 'Product deleted successfully';
     }
 }
 
@@ -65,14 +65,14 @@ $products = $search_query ? search_products($search_query) : get_products();
         <h2><?php echo $action === 'edit' ? 'Edit Product' : 'Manage Products'; ?></h2>
     </div>
     <div class="card-body">
-        <?php if ($message): ?>
+        <?php if ($message) { ?>
             <div class="alert alert-success"><?php echo $message; ?></div>
-        <?php endif; ?>
+        <?php } ?>
 
         <form method="post" enctype="multipart/form-data" class="mb-4">
-            <?php if ($edit_product): ?>
+            <?php if ($edit_product) { ?>
                 <input type="hidden" name="id" value="<?php echo $edit_product['id']; ?>">
-            <?php endif; ?>
+            <?php } ?>
             
             <div class="row">
                 <div class="col-md-6">
@@ -86,12 +86,12 @@ $products = $search_query ? search_products($search_query) : get_products();
                         <label>Category</label>
                         <select name="category_id" class="form-control" required>
                             <option value="">Select Category</option>
-                            <?php foreach (get_categories() as $category): ?>
+                            <?php foreach (get_categories() as $category) { ?>
                                 <option value="<?php echo $category['id']; ?>"
                                     <?php echo ($edit_product && $edit_product['category_id'] == $category['id']) ? 'selected' : ''; ?>>
                                     <?php echo htmlspecialchars($category['name']); ?>
                                 </option>
-                            <?php endforeach; ?>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -107,12 +107,12 @@ $products = $search_query ? search_products($search_query) : get_products();
                     <div class="mb-3">
                         <label>Image</label>
                         <input type="file" name="image" class="form-control">
-                        <?php if ($edit_product && $edit_product['image']): ?>
+                        <?php if ($edit_product && $edit_product['image']) { ?>
                             <div class="mt-2">
                                 <img src="<?php echo htmlspecialchars($edit_product['image']); ?>" 
                                      alt="Current image" class="img-thumbnail" style="max-width: 200px;">
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
                     <button type="submit" name="<?php echo $edit_product ? 'edit_product' : 'add_product'; ?>" 
                             class="btn btn-primary">
@@ -122,7 +122,7 @@ $products = $search_query ? search_products($search_query) : get_products();
             </div>
         </form>
 
-        <?php if ($action !== 'edit'): ?>
+        <?php if ($action !== 'edit') { ?>
             <table class="table">
                 <thead>
                     <tr>
@@ -135,14 +135,14 @@ $products = $search_query ? search_products($search_query) : get_products();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($products as $product): ?>
+                    <?php foreach ($products as $product) { ?>
                     <tr>
                         <td><?php echo $product['id']; ?></td>
                         <td>
-                            <?php if ($product['image']): ?>
+                            <?php if ($product['image']) { ?>
                                 <img height="100px" width="100px" src="<?php echo htmlspecialchars($product['image']); ?>" 
                                      alt="" class="product-thumbnail">
-                            <?php endif; ?>
+                            <?php } ?>
                         </td>
                         <td><?php echo htmlspecialchars($product['name']); ?></td>
                         <td><?php echo htmlspecialchars($product['category_name']); ?></td>
@@ -155,9 +155,9 @@ $products = $search_query ? search_products($search_query) : get_products();
                                onclick="return confirm('Are you sure?')">Delete</a>
                         </td>
                     </tr>
-                    <?php endforeach; ?>
+                    <?php } ?>
                 </tbody>
             </table>
-        <?php endif; ?>
+        <?php } ?>
     </div>
 </div> 
