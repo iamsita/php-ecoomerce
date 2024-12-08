@@ -83,7 +83,6 @@ $recent_orders = array_slice(get_all_orders(), 0, 5);
                                         <?php echo ucfirst($order['status']); ?>
                                     </span>
                                 </td>
-                                <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>

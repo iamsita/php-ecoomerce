@@ -30,8 +30,7 @@ $orders = $search_query ? search_user_orders($_SESSION['user_id'], $search_query
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h5 class="mb-0">Order #<?php echo $order['id']; ?></h5>
-                                <small class="text-muted">Placed on <?php echo date('M d, Y', strtotime($order['created_at'])); ?></small>
-                            </div>
+                                </div>
                             <div>
                                 <span class="badge bg-<?php echo get_status_color($order['status']); ?>">
                                     <?php echo ucfirst($order['status']); ?>

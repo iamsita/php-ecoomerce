@@ -52,7 +52,6 @@ $orders = $search_query ? search_orders($search_query) : get_all_orders();
                                 <?php echo ucfirst($order['status']); ?>
                             </span>
                         </td>
-                        <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
                         <td>
                             <form method="post" class="d-inline">
                                 <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
