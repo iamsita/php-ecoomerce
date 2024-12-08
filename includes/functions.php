@@ -189,20 +189,20 @@ function register_user($data)
     }
 }
 
-function add_category($name, $slug)
+function add_category($name)
 {
     global $db;
-    $stmt = $db->prepare('INSERT INTO categories (name, slug) VALUES (?, ?)');
+    $stmt = $db->prepare('INSERT INTO categories (name) VALUES (?)');
 
-    return $stmt->execute([$name, $slug]);
+    return $stmt->execute([$name]);
 }
 
-function update_category($id, $name, $slug)
+function update_category($id, $name)
 {
     global $db;
-    $stmt = $db->prepare('UPDATE categories SET name = ?, slug = ? WHERE id = ?');
+    $stmt = $db->prepare('UPDATE categories SET name = ? WHERE id = ?');
 
-    return $stmt->execute([$name, $slug, $id]);
+    return $stmt->execute([$name, $id]);
 }
 
 function delete_category($id)
@@ -213,22 +213,22 @@ function delete_category($id)
     return $stmt->execute([$id]);
 }
 
-function add_product($name, $slug, $category_id, $description, $price, $image)
+function add_product($name, $category_id, $description, $price, $image)
 {
     global $db;
-    $stmt = $db->prepare('INSERT INTO products (name, slug, category_id, description, price, image) 
-                         VALUES (?, ?, ?, ?, ?, ?)');
+    $stmt = $db->prepare('INSERT INTO products (name, category_id, description, price, image) 
+                         VALUES (?, ?, ?, ?, ?)');
 
-    return $stmt->execute([$name, $slug, $category_id, $description, $price, $image]);
+    return $stmt->execute([$name, $category_id, $description, $price, $image]);
 }
 
-function update_product($id, $name, $slug, $category_id, $description, $price, $image)
+function update_product($id, $name, $category_id, $description, $price, $image)
 {
     global $db;
-    $stmt = $db->prepare('UPDATE products SET name = ?, slug = ?, category_id = ?, description = ?, 
+    $stmt = $db->prepare('UPDATE products SET name = ?, category_id = ?, description = ?, 
                          price = ?, image = ? WHERE id = ?');
 
-    return $stmt->execute([$name, $slug, $category_id, $description, $price, $image, $id]);
+    return $stmt->execute([$name, $category_id, $description, $price, $image, $id]);
 }
 
 function delete_product($id)

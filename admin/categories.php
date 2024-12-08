@@ -16,14 +16,12 @@ if ($action === 'edit' && isset($_GET['id'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['add_category'])) {
         $name = $_POST['name'];
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
-        if (add_category($name, $slug)) {
+        if (add_category($name)) {
             $message = 'Category added successfully';
         }
     } elseif (isset($_POST['edit_category'])) {
         $name = $_POST['name'];
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
-        if (update_category($_POST['id'], $name, $slug)) {
+        if (update_category($_POST['id'], $name)) {
             header('Location: index.php?page=admin&admin_page=categories');
             exit;
         }
@@ -88,7 +86,6 @@ $categories = $search_query ? search_categories($search_query) : get_categories(
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Slug</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -97,7 +94,6 @@ $categories = $search_query ? search_categories($search_query) : get_categories(
                     <tr>
                         <td><?php echo $category['id']; ?></td>
                         <td><?php echo htmlspecialchars($category['name']); ?></td>
-                        <td><?php echo htmlspecialchars($category['slug']); ?></td>
                         <td>
                             <a href="?page=admin&admin_page=categories&action=edit&id=<?php echo $category['id']; ?>" 
                                class="btn btn-sm btn-primary">Edit</a>

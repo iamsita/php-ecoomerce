@@ -1,10 +1,10 @@
 <?php
-if (! isset($_SESSION['user_id']) || ! is_admin()) {
+if (!isset($_SESSION['user_id']) || !is_admin()) {
     header('Location: index.php?page=login');
     exit;
 }
 
-$admin_page = isset($_GET['admin_page']) ? $_GET['admin_page'] : 'dashboard';
+$admin_page = $_GET['admin_page'] ?? 'dashboard';
 ?>
 
 <div class="row">
@@ -19,9 +19,6 @@ $admin_page = isset($_GET['admin_page']) ? $_GET['admin_page'] : 'dashboard';
     <div class="col-md-9">
         <?php
         switch ($admin_page) {
-            case 'dashboard':
-                include 'admin/dashboard.php';
-                break;
             case 'products':
                 include 'admin/products.php';
                 break;
@@ -35,6 +32,6 @@ $admin_page = isset($_GET['admin_page']) ? $_GET['admin_page'] : 'dashboard';
                 include 'admin/dashboard.php';
                 break;
         }
-?>
+        ?>
     </div>
 </div> 

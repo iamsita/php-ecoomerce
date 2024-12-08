@@ -66,12 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="text-danger"><?php echo $errors['shipping_address']; ?></div>
                         <?php } ?>
                     </div>
-
-                    <div class="mb-3">
-                        <label>Billing Address (if different from shipping)</label>
-                        <textarea name="billing_address" class="form-control" rows="3"><?php echo $_POST['billing_address'] ?? ''; ?></textarea>
-                    </div>
-
                     <div class="mb-3">
                         <label>Phone Number*</label>
                         <input type="tel" name="phone" class="form-control" value="<?php echo $_POST['phone'] ?? ''; ?>" required>

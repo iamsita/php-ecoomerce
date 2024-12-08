@@ -31,3 +31,4 @@ Thumbs.db
 
 # Configuration files that might contain sensitive information
 config/config.php 
+vendor
