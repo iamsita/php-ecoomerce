@@ -145,7 +145,6 @@ function login_user($email, $password) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['user_type'] = $user['type'];
-        $_SESSION['username'] = $user['username'];
         return true;
     }
     return false;
@@ -156,11 +155,10 @@ function register_user($data) {
     
     try {
         $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
-        $stmt = $db->prepare("INSERT INTO users (email, password, username) VALUES (?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
         $stmt->execute([
             $data['email'],
             $hashed_password,
-            $data['username'] ?? null
         ]);
         return true;
     } catch (PDOException $e) {
@@ -208,9 +206,8 @@ function delete_product($id) {
 
 function get_all_orders() {
     global $db;
-    $stmt = $db->query("SELECT o.*, u.username FROM orders o 
-                        JOIN users u ON o.user_id = u.id 
-                        ORDER BY o.created_at DESC");
+    $stmt = $db->query("SELECT o.*, u.email FROM orders o 
+                        JOIN users u ON o.user_id = u.id");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -310,7 +307,7 @@ function get_category($id) {
 
 function get_user_orders($user_id) {
     global $db;
-    $stmt = $db->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC");
+    $stmt = $db->prepare("SELECT * FROM orders WHERE user_id = ?");
     $stmt->execute([$user_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -364,8 +361,7 @@ function search_orders($query) {
                          WHERE o.id LIKE ? 
                          OR u.username LIKE ? 
                          OR u.email LIKE ? 
-                         OR o.phone LIKE ?
-                         ORDER BY o.created_at DESC");
+                         OR o.phone LIKE ?");
     $stmt->execute([$search, $search, $search, $search]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -375,8 +371,7 @@ function search_user_orders($user_id, $query) {
     $search = "%{$query}%";
     $stmt = $db->prepare("SELECT * FROM orders 
                          WHERE user_id = ? 
-                         AND (id LIKE ? OR phone LIKE ? OR email LIKE ?)
-                         ORDER BY created_at DESC");
+                         AND (id LIKE ? OR phone LIKE ? OR email LIKE ?)");
     $stmt->execute([$user_id, $search, $search, $search]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -385,8 +380,7 @@ function get_related_products($category_id, $current_product_id, $limit = 4) {
     global $db;
     $stmt = $db->prepare("SELECT p.*, c.name as category_name 
                          FROM products p 
-                         LEFT JOIN categories c ON p.category_id = c.id 
-                         WHERE p.category_id = :category_id 
+                         LEFT JOIN categories c ON p.category_id = :category_id 
                          AND p.id != :current_id 
                          ORDER BY RAND() 
                          LIMIT :limit");

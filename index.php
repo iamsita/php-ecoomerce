@@ -24,15 +24,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=products">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=categories">Categories</a>
-                    </li>
                     <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?page=admin">Admin Panel</a>
@@ -95,9 +86,9 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             case 'products':
                 include 'pages/products.php';
                 break;
-            case 'categories':
-                include 'pages/categories.php';
-                break;
+            // case 'categories':
+            //     include 'pages/categories.php';
+            //     break;
             case 'cart':
                 include 'pages/cart.php';
                 break;

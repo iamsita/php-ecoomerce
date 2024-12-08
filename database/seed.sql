@@ -1,22 +1,22 @@
 USE ecommerce;
 
 -- Insert default admin user (password: admin123)
-INSERT INTO users (email, password, type, username) 
-VALUES ('admin@example.com', '$2y$10$8K1p/a4SWE6j5/GOOoMgCOzF9TJVZKp1qz.vsv6bqWL9yHk7WKjie', 'admin', 'admin');
+INSERT INTO users (email, password, type) 
+VALUES ('admin@gmail.com', '$2y$10$8K1p/a4SWE6j5/GOOoMgCOzF9TJVZKp1qz.vsv6bqWL9yHk7WKjie', 'admin');
 
--- Insert sample categories with slugs
-INSERT INTO categories (name, slug) VALUES 
-('Clothing & Beauty', 'clothing-beauty'),
-('Makeup', 'makeup'),
-('Jewelry', 'jewelry'),
-('Handbags', 'handbags'),
-('Shoes', 'shoes'),
-('Skincare', 'skincare'),
-('Haircare', 'haircare'),
-('Fragrances', 'fragrances'),
-('Lingerie', 'lingerie');
+-- Insert sample categories
+INSERT INTO categories (name) VALUES 
+('Clothing & Beauty'),
+('Makeup'),
+('Jewelry'),
+('Handbags'),
+('Shoes'),
+('Skincare'),
+('Haircare'),
+('Fragrances'),
+('Lingerie');
 
--- Insert sample products with slugs and stock
+-- Insert sample products
 INSERT INTO products (name, slug, category_id, description, price, image) VALUES 
 ('Cotton T-shirt', 'cotton-t-shirt', 1, 'Comfortable clothing cotton t-shirt', 19.99, '/assets/products/image3.jpg'),
 ('Makeup Kit', 'makeup-kit', 2, 'Complete makeup kit for all occasions', 49.99, '/assets/products/image41.jpg'),

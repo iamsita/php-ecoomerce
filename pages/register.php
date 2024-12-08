@@ -7,9 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_data = [
         'email' => $_POST['email'] ?? '',
         'password' => $_POST['password'] ?? '',
-        'username' => $_POST['username'] ?? ''
     ];
-
     // Validate input
     $errors = validate_user_data($user_data);
 
@@ -48,12 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="text-danger"><?php echo $errors['email']; ?></div>
                             <?php endif; ?>
                         </div>
-
-                        <div class="mb-3">
-                            <label>Username (Optional)</label>
-                            <input type="text" name="username" class="form-control" value="<?php echo $_POST['username'] ?? ''; ?>">
-                        </div>
-
                         <div class="mb-3">
                             <label>Password*</label>
                             <input type="password" name="password" class="form-control" required>
