@@ -30,7 +30,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
                     </li>
                 <?php } ?>
             </ul>
-            `
             <ul class="navbar-nav">
 
                 <?php if (isset($_SESSION['user_id'])) { ?>
@@ -70,7 +69,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     <?php } ?>
 
     <?php
-    // Create assets/images directory if it doesn't exist
     $image_dir = 'assets/images';
 if (! file_exists($image_dir)) {
     mkdir($image_dir, 0777, true);
@@ -83,9 +81,6 @@ switch ($page) {
     case 'products':
         include 'pages/products.php';
         break;
-        // case 'categories':
-        //     include 'pages/categories.php';
-        //     break;
     case 'cart':
         include 'pages/cart.php';
         break;

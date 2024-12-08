@@ -21,12 +21,7 @@ include 'includes/search_bar.php';
 $featured_products = $search_query ? search_products($search_query) : get_products(20);
 ?>
 
-<div class="jumbotron text-center bg-light p-4 mb-4">
-    <h1>Welcome to Our E-Commerce Store</h1>
-    <p class="lead">Discover our amazing products at great prices!</p>
-</div>
-
-<h2 class="mb-4">Featured Products</h2>
+<h2 class="mb-4">Products</h2>
 
 <div class="row">
     <?php foreach ($featured_products as $product) { ?>

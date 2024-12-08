@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS ecommerce;
+       
 USE ecommerce;
 
 -- Drop existing tables if they exist (in correct order due to foreign keys)
@@ -8,7 +9,7 @@ DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
 
--- Create users table with additional fields for better user management
+-- Create users table
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -26,7 +27,6 @@ CREATE TABLE categories (
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
-    slug VARCHAR(200) NOT NULL,
     category_id INT,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE products (
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
 
--- Create orders table with shipping and billing information
+-- Create orders table
 CREATE TABLE orders (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
@@ -51,7 +51,7 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Create order_items table with additional price information
+-- Create order_items table
 CREATE TABLE order_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT,
@@ -65,6 +65,5 @@ CREATE TABLE order_items (
 
 -- Create indexes for better performance
 CREATE INDEX idx_user_email ON users(email);
-CREATE INDEX idx_product_slug ON products(slug);
 CREATE INDEX idx_order_user ON orders(user_id);
 CREATE INDEX idx_order_status ON orders(status); 

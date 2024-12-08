@@ -1,14 +1,14 @@
 <form method="get" class="mb-4">
     <div class="input-group">
-        <input type="hidden" name="page" value="<?php echo htmlspecialchars($_GET['page'] ?? ''); ?>">
+        <input type="hidden" name="page" value="<?php echo htmlspecialchars($_GET['page'] ?? (isset($_GET['admin_page']) ? 'dashboard' : 'home')); ?>">
         <?php if (isset($_GET['admin_page'])) { ?>
             <input type="hidden" name="admin_page" value="<?php echo htmlspecialchars($_GET['admin_page']); ?>">
         <?php } ?>
         <?php if (isset($_GET['category'])) { ?>
             <input type="hidden" name="category" value="<?php echo htmlspecialchars($_GET['category']); ?>">
         <?php } ?>
-        <input type="text" name="search" class="form-control" 
-               placeholder="Search..." 
+        <input type="text" name="search" class="form-control"
+               placeholder="Search..."
                value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
         <button class="btn btn-primary" type="submit">Search</button>
         <?php if (isset($_GET['search'])) { ?>
