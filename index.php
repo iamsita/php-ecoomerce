@@ -63,8 +63,8 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <?php
             echo $_SESSION['message'];
-            unset($_SESSION['message']); // Clear the message after displaying
-            ?>
+        unset($_SESSION['message']); // Clear the message after displaying
+        ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php } ?>
@@ -72,54 +72,54 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     <?php
     // Create assets/images directory if it doesn't exist
     $image_dir = 'assets/images';
-    if (!file_exists($image_dir)) {
-        mkdir($image_dir, 0777, true);
-    }
+if (! file_exists($image_dir)) {
+    mkdir($image_dir, 0777, true);
+}
 
-    switch ($page) {
-        case 'home':
-            include 'pages/home.php';
-            break;
-        case 'products':
-            include 'pages/products.php';
-            break;
+switch ($page) {
+    case 'home':
+        include 'pages/home.php';
+        break;
+    case 'products':
+        include 'pages/products.php';
+        break;
         // case 'categories':
         //     include 'pages/categories.php';
         //     break;
-        case 'cart':
-            include 'pages/cart.php';
-            break;
-        case 'login':
-            include 'pages/login.php';
-            break;
-        case 'register':
-            include 'pages/register.php';
-            break;
-        case 'orders':
-            include 'pages/orders.php';
-            break;
-        case 'admin':
-            if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') {
-                include 'admin/index.php';
-            } else {
-                header('Location: index.php');
-                exit;
-            }
-            break;
-        case 'logout':
-            include 'pages/logout.php';
-            break;
-        case 'checkout':
-            include 'pages/checkout.php';
-            break;
-        case 'product_detail':
-            include 'pages/product_detail.php';
-            break;
-        default:
-            include 'pages/404.php';
-            break;
-    }
-    ?>
+    case 'cart':
+        include 'pages/cart.php';
+        break;
+    case 'login':
+        include 'pages/login.php';
+        break;
+    case 'register':
+        include 'pages/register.php';
+        break;
+    case 'orders':
+        include 'pages/orders.php';
+        break;
+    case 'admin':
+        if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin') {
+            include 'admin/index.php';
+        } else {
+            header('Location: index.php');
+            exit;
+        }
+        break;
+    case 'logout':
+        include 'pages/logout.php';
+        break;
+    case 'checkout':
+        include 'pages/checkout.php';
+        break;
+    case 'product_detail':
+        include 'pages/product_detail.php';
+        break;
+    default:
+        include 'pages/404.php';
+        break;
+}
+?>
 </div>
 
 <script src="assets/js/main.js"></script>
