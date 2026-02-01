@@ -92,16 +92,14 @@ function create_order($order_data)
             total_amount, 
             shipping_address, 
             phone, 
-            notes, 
             payment_method
-        ) VALUES (?, ?, ?, ?, ?, ?)');
+        ) VALUES (?, ?, ?, ?, ?)');
 
         $stmt->execute([
             (int) $order_data['user_id'],
             (float) $order_data['total_amount'],
             (string) $order_data['shipping_address'],
             (string) $order_data['phone'],
-            (string) $order_data['notes'],
             (string) $order_data['payment_method'],
         ]);
 
@@ -412,7 +410,6 @@ function search_orders($query)
                          FROM orders o 
                          JOIN users u ON o.user_id = u.id 
                          WHERE o.id LIKE ? 
-                         OR u.username LIKE ? 
                          OR u.email LIKE ? 
                          OR o.phone LIKE ?');
     $stmt->execute([$search, $search, $search, $search]);

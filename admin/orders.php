@@ -45,7 +45,7 @@ $orders = $search_query ? search_orders($search_query) : get_all_orders();
                 <?php foreach ($orders as $order) { ?>
                     <tr>
                         <td>#<?php echo $order['id']; ?></td>
-                        <td><?php echo htmlspecialchars($order['username']); ?></td>
+                        <td><?php echo htmlspecialchars($order['email'] ?? 'N/A'); ?></td>
                         <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
                         <td>
                             <span class="badge bg-<?php echo get_status_color($order['status']); ?>">

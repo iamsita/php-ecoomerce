@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'shipping_address' => $_POST['shipping_address'],
             'phone' => $_POST['phone'],
             'status' => 'pending',
-            'notes' => $_POST['notes'] ?? '',
             'payment_method' => 'cod',
         ];
 
@@ -70,14 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input type="tel" name="phone" class="form-control" value="<?php echo $_POST['phone'] ?? ''; ?>" required>
                         <?php if (isset($errors['phone'])) { ?>
                             <div class="text-danger"><?php echo $errors['phone']; ?></div>
-                        <?php } ?>
+                        <?php } ?>ecommerc
                     </div>
 
-                    <div class="mb-3">
-                        <label>Additional Information</label>
-                        <textarea name="notes" class="form-control" rows="2"><?php echo $_POST['notes'] ?? ''; ?></textarea>
-                    </div>
-
+            
                     <button type="submit" class="btn btn-primary">Place Order (Cash on Delivery)</button>
                     <a href="index.php?page=cart" class="btn btn-secondary">Back to Cart</a>
                 </form>

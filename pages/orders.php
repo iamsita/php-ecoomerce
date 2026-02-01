@@ -63,8 +63,8 @@ $orders = $search_query ? search_user_orders($_SESSION['user_id'], $search_query
                                 <p><?php echo nl2br(htmlspecialchars($order['shipping_address'])); ?></p>
                                 <h6>Contact:</h6>
                                 <p>
-                                    Phone: <?php echo htmlspecialchars($order['phone']); ?><br>
-                                    Email: <?php echo htmlspecialchars($order['email']); ?>
+                                    Phone: <?php echo htmlspecialchars($order['phone']??'N/A'); ?><br>
+                                    Email: <?php echo htmlspecialchars($order['email'] ?? 'N/A'); ?>
                                 </p>
                                 <?php if ($order['notes']) { ?>
                                     <h6>Notes:</h6>

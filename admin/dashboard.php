@@ -76,7 +76,7 @@ $recent_orders = array_slice(get_all_orders(), 0, 5);
                         <?php foreach ($recent_orders as $order) { ?>
                             <tr>
                                 <td>#<?php echo $order['id']; ?></td>
-                                <td><?php echo htmlspecialchars($order['username']); ?></td>
+                                <td><?php echo htmlspecialchars($order['email']); ?></td>
                                 <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
                                 <td>
                                     <span class="badge bg-<?php echo get_status_color($order['status']); ?>">
